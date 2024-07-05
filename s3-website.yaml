@@ -1,0 +1,27 @@
+Resources:
+  MyBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+  MyBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref MyBucket
+      PolicyDocument:
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: '*'
+            Action: 's3:GetObject'
+            Resource: !Sub 'arn:aws:s3:::${MyBucket}/*'
+
+  IndexHtmlObject:
+    Type: AWS::S3::Object
+    Properties:
+      Bucket: !Ref MyBucket
+      Key: index.html
+      ContentType: text/html
+      Source: index.html  # Assuming index.html is in the same directory as this template
