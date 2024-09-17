@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Parameters:
+  TopicArn:
+    Type: String
+    Description: The ARN of the SNS topic
+  SubscriberEmails:
+    Type: String
+    Description: A comma-delimited list of email addresses (only the first email will be used)
+
+Resources:
+  Subscription1:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref TopicArn
+      Protocol: email
+      Endpoint: !Select [0, !Split [",", !Ref SubscriberEmails]]
